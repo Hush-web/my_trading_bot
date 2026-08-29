@@ -1,0 +1,9 @@
+version: '3'
+services:
+  freqtrade:
+    image: freqtradeorg/freqtrade:stable
+    container_name: ft_bot
+    restart: unless-stopped
+    volumes:
+      - ./user_data:/freqtrade/user_data
+    command: trade --config user_data/configs/config.json --strategy MyStrategy
