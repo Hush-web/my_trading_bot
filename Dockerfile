@@ -1,7 +1,7 @@
 ﻿FROM freqtradeorg/freqtrade:stable
 
-# Copy your entire user_data folder into the container
+# Copy your strategy and config into the container
 COPY user_data /freqtrade/user_data
 
-# Set the command to run your bot
+# Start the bot with your strategy
 CMD ["trade", "--config", "user_data/configs/config.json", "--strategy", "SecureFreqStrategy"]
