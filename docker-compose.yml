@@ -1,4 +1,3 @@
-version: '3'
 services:
   freqtrade:
     image: freqtradeorg/freqtrade:stable
@@ -6,4 +5,4 @@ services:
     restart: unless-stopped
     volumes:
       - ./user_data:/freqtrade/user_data
-    command: trade --config user_data/configs/config.json --strategy MyStrategy
+    command: trade --config user_data/configs/config.json --strategy SecureFreqStrategy
