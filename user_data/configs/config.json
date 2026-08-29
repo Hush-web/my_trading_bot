@@ -1,0 +1,52 @@
+{
+  "max_open_trades": 2,
+  "stake_currency": "USD",
+  "stake_amount": 50,
+  "dry_run": true,
+  "dry_run_wallet": 1000,
+  "cancel_open_orders_on_exit": true,
+  "process_only_new_candles": false,
+  "stoploss": -0.10,
+  "pairlists": [
+    {
+      "method": "StaticPairList"
+    }
+  ],
+  "exchange": {
+    "name": "kraken",
+    "key": "dummy",
+    "secret": "dummy",
+    "ccxt_config": {
+      "enableRateLimit": true,
+      "timeout": 30000
+    },
+   "pair_whitelist": [
+  "BTC/USD",
+  "ETH/USD",
+  "SOL/USD",
+  "ADA/USD",
+  "DOT/USD",
+  "LINK/USD"
+]
+    ,
+    "pair_blacklist": []
+  },
+  "entry_pricing": {
+    "price_side": "ask",
+    "use_order_book": true,
+    "order_book_top": 1
+  },
+  "exit_pricing": {
+    "price_side": "bid",
+    "use_order_book": true,
+    "order_book_top": 1
+  },
+  "telegram": {
+    "enabled": true,
+    "token": "8629949336:AAEvDe1g-aXa29batacnaNyRSO5Ei0N_T60",
+    "chat_id": "1082143881"
+  },
+  "timeframe": "5m",
+  "internals": {},
+  "initial_state": "running"
+}
