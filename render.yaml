@@ -1,0 +1,25 @@
+services:
+  - type: web
+    name: freqtrade-bot
+    runtime: image
+    repo: https://github.com/Hush-web/my_trading_bot
+    plan: free
+    image:
+      url: freqtradeorg/freqtrade:stable
+    envVars:
+      - key: FREQTRADE__EXCHANGE__NAME
+        value: kraken
+      - key: FREQTRADE__EXCHANGE__KEY
+        value: YOUR_PUBLIC_KEY_HERE
+      - key: FREQTRADE__EXCHANGE__SECRET
+        value: YOUR_PRIVATE_SECRET_HERE
+      - key: FREQTRADE__STAKE_AMOUNT
+        value: "50"
+      - key: FREQTRADE__DRY_RUN
+        value: "true"
+      - key: FREQTRADE__INITIAL_STATE
+        value: "running"
+    disk:
+      name: freqtrade-data
+      mountPath: /freqtrade/user_data
+      sizeGB: 1
