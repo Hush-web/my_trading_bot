@@ -20,15 +20,14 @@
       "enableRateLimit": true,
       "timeout": 30000
     },
-   "pair_whitelist": [
-  "BTC/USD",
-  "ETH/USD",
-  "SOL/USD",
-  "ADA/USD",
-  "DOT/USD",
-  "LINK/USD"
-]
-    ,
+    "pair_whitelist": [
+      "BTC/USD",
+      "ETH/USD",
+      "SOL/USD",
+      "ADA/USD",
+      "DOT/USD",
+      "LINK/USD"
+    ],
     "pair_blacklist": []
   },
   "entry_pricing": {
@@ -44,9 +43,26 @@
   "telegram": {
     "enabled": true,
     "token": "8629949336:AAEvDe1g-aXa29batacnaNyRSO5Ei0N_T60",
-    "chat_id": "1082143881"
+    "chat_id": "1082143881",
+    "notification_settings": {
+      "status": "on",
+      "warning": "on",
+      "entry": "on",
+      "entry_fill": "on",
+      "exit": "on",
+      "exit_fill": "on"
+    }
   },
   "timeframe": "5m",
   "internals": {},
-  "initial_state": "running"
+  "initial_state": "running",
+  "api_server": {
+    "enabled": true,
+    "listen_ip_address": "0.0.0.0",
+    "listen_port": 8080,
+    "verbose": false,
+    "enable_ui": false,
+    "username": "freqtrader",
+    "password": "freqtrader"
+  }
 }
