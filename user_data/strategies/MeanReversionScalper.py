@@ -1,7 +1,6 @@
 ﻿from freqtrade.strategy import IStrategy, IntParameter, DecimalParameter
 from pandas import DataFrame
 import talib.abstract as ta
-import freqtrade.vendor.qtpylib.indicators as qtpylib
 
 class MeanReversionScalper(IStrategy):
     timeframe = '5m'
@@ -29,14 +28,17 @@ class MeanReversionScalper(IStrategy):
     bb_std = DecimalParameter(1.5, 2.5, default=2.0, space='buy')
 
     def populate_indicators(self, dataframe: DataFrame, metadata: dict) -> DataFrame:
-        bollinger = qtpylib.bollinger_bands(
-            qtpylib.typical_price(dataframe),
-            window=20,
-            stds=self.bb_std.value
+        # Bollinger Bands using TA-Lib (no qtpylib)
+        bollinger = ta.BBANDS(
+            dataframe['close'],
+            timeperiod=20,
+            nbdevup=self.bb_std.value,
+            nbdevdn=self.bb_std.value,
+            matype=0  # Simple Moving Average
         )
-        dataframe['bb_lower'] = bollinger['lower']
-        dataframe['bb_middle'] = bollinger['mid']
-        dataframe['bb_upper'] = bollinger['upper']
+        dataframe['bb_upper'] = bollinger['upperband']
+        dataframe['bb_middle'] = bollinger['middleband']
+        dataframe['bb_lower'] = bollinger['lowerband']
 
         dataframe['rsi'] = ta.RSI(dataframe, timeperiod=14)
         dataframe['atr'] = ta.ATR(dataframe, timeperiod=14)
