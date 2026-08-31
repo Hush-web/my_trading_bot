@@ -28,7 +28,7 @@ class MyStrategy(IStrategy):
     bb_std = DecimalParameter(1.5, 2.5, default=2.0, space='buy')
 
     def populate_indicators(self, dataframe: DataFrame, metadata: dict) -> DataFrame:
-        # Bollinger Bands – TA-Lib returns tuple (upper, middle, lower)
+        # BBANDS returns a tuple (upper, middle, lower)
         upper, middle, lower = ta.BBANDS(
             dataframe['close'],
             timeperiod=20,
@@ -42,7 +42,6 @@ class MyStrategy(IStrategy):
 
         dataframe['rsi'] = ta.RSI(dataframe, timeperiod=14)
         dataframe['atr'] = ta.ATR(dataframe, timeperiod=14)
-
         dataframe['volume_mean'] = dataframe['volume'].rolling(20).mean()
         dataframe['volume_spike'] = dataframe['volume'] / dataframe['volume_mean']
 
