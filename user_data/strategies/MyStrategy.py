@@ -1,4 +1,4 @@
-﻿from freqtrade.strategy import IStrategy, IntParameter, DecimalParameter
+from freqtrade.strategy import IStrategy, IntParameter, DecimalParameter
 from pandas import DataFrame
 import talib.abstract as ta
 
@@ -23,12 +23,11 @@ class MyStrategy(IStrategy):
         "60": 0.0
     }
 
-    buy_rsi = IntParameter(20, 35, default=28, space='buy')
+    buy_rsi = IntParameter(30, 45, default=35, space='buy')
     sell_rsi = IntParameter(55, 75, default=65, space='sell')
     bb_std = DecimalParameter(1.5, 2.5, default=2.0, space='buy')
 
     def populate_indicators(self, dataframe: DataFrame, metadata: dict) -> DataFrame:
-        # BBANDS returns a tuple (upper, middle, lower)
         upper, middle, lower = ta.BBANDS(
             dataframe['close'],
             timeperiod=20,
@@ -50,9 +49,13 @@ class MyStrategy(IStrategy):
     def populate_buy_trend(self, dataframe: DataFrame, metadata: dict) -> DataFrame:
         dataframe.loc[
             (
+                # 1. RSI is oversold (but not extreme)
                 (dataframe['rsi'] < self.buy_rsi.value) &
-                (dataframe['close'] <= dataframe['bb_lower']) &
-                (dataframe['volume_spike'] > 1.2) &
+                # 2. Price dips below the middle band (normal pullback)
+                (dataframe['close'] <= dataframe['bb_middle']) &
+                # 3. Volume is slightly above average
+                (dataframe['volume_spike'] > 1.1) &
+                # 4. Avoid extreme volatility
                 (dataframe['atr'] / dataframe['close'] < 0.03)
             ),
             'buy'] = 1
@@ -62,7 +65,7 @@ class MyStrategy(IStrategy):
         dataframe.loc[
             (
                 (dataframe['rsi'] > self.sell_rsi.value) |
-                (dataframe['close'] >= dataframe['bb_middle'])
+                (dataframe['close'] >= dataframe['bb_upper'])
             ),
             'sell'] = 1
         return dataframe
